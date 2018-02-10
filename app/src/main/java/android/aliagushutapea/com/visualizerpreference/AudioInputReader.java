@@ -27,7 +27,6 @@ public class AudioInputReader {
     public AudioInputReader(VisualizerView visualizerView, Context context) {
         this.mVisualizerView = visualizerView;
         this.mContext = context;
-        initVisualizer();
     }
 
     public void initVisualizer() {
@@ -76,7 +75,6 @@ public class AudioInputReader {
     }
 
     public void shutdown(boolean isFinishing) {
-
         if (mPlayer != null) {
             mPlayer.pause();
             if (isFinishing) {
@@ -94,11 +92,9 @@ public class AudioInputReader {
 
     public void restart(Uri uri) {
         this.uri = uri;
-        initVisualizer();
-        /*if (mPlayer != null) {
-            mPlayer.start();
+        if (mPlayer != null) {
+            mPlayer.stop();
         }
-        mVisualizer.setEnabled(true);
-        mVisualizerView.restart();*/
+        initVisualizer();
     }
 }

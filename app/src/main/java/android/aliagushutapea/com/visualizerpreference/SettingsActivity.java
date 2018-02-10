@@ -1,7 +1,7 @@
 package android.aliagushutapea.com.visualizerpreference;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -24,7 +24,9 @@ public class SettingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
+            //NavUtils.navigateUpFromSameTask(this);
+            Intent intent = new Intent(this, VisualizerActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

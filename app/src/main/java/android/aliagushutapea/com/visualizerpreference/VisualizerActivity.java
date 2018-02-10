@@ -135,7 +135,7 @@ public class VisualizerActivity extends AppCompatActivity implements
     protected void onPause() {
         super.onPause();
         if (mAudioInputReader != null) {
-            mAudioInputReader.shutdown(isFinishing());
+            mAudioInputReader.shutdown(true);
         }
     }
 
@@ -153,18 +153,18 @@ public class VisualizerActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
+    /*@Override
     protected void onStop() {
         super.onStop();
         if (mAudioInputReader != null) {
             mAudioInputReader.shutdown(isFinishing());
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        onStop();
+        onPause();
     }
 
     /**
@@ -173,18 +173,18 @@ public class VisualizerActivity extends AppCompatActivity implements
     private void setupPermissions() {
         // If we don't have the record audio permission...
         boolean isGrantedAudio = ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
-        boolean isGrantedExternal = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        if (!isGrantedAudio && !isGrantedExternal) {
+        boolean isGrantedReadExternal = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        boolean isGrantedWriteExternal = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        if (!isGrantedAudio && !isGrantedReadExternal && !isGrantedWriteExternal) {
             // And if we're on SDK M or later...
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 // Ask again, nicely, for the permissions.
-                String[] permissionsWeNeed = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE};
+                String[] permissionsWeNeed = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                 requestPermissions(permissionsWeNeed, MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE);
             }
         } else {
             // Otherwise, permissions were granted and we are ready to go!
             mAudioInputReader = new AudioInputReader(mVisualizerView, this);
-            //onResume();
         }
     }
 
